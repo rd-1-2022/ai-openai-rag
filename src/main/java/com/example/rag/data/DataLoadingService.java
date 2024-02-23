@@ -40,11 +40,11 @@ public class DataLoadingService {
                         .withPagesPerDocument(1)
                         .build());
 
-        var textSplitter = new TokenTextSplitter();
+        var tokenTextSplitter = new TokenTextSplitter();
 
         logger.info("Parsing document, splitting, creating embeddings and storing in vector store...  this will take a while.");
         this.vectorStore.accept(
-                textSplitter.apply(
+                tokenTextSplitter.apply(
                         pdfReader.get()));
         logger.info("Done parsing document, splitting, creating embeddings and storing in vector store");
 
