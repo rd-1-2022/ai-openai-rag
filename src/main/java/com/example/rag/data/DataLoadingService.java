@@ -35,7 +35,6 @@ public class DataLoadingService {
                         .withPageExtractedTextFormatter(ExtractedTextFormatter.builder()
                                 .withNumberOfBottomTextLinesToDelete(3)
                                 .withNumberOfTopPagesToSkipBeforeDelete(1)
-                                // .withLeftAlignment(true)
                                 .build())
                         .withPagesPerDocument(1)
                         .build());
