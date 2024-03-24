@@ -15,37 +15,37 @@ import org.springframework.util.Assert;
 
 @Service
 public class DataLoadingService {
-    private static final Logger logger = LoggerFactory.getLogger(DataLoadingService.class);
 
-    @Value("classpath:/data/medicaid-wa-faqs.pdf")
-    private Resource pdfResource;
+	private static final Logger logger = LoggerFactory.getLogger(DataLoadingService.class);
 
-    private final VectorStore vectorStore;
+	@Value("classpath:/data/medicaid-wa-faqs.pdf")
+	private Resource pdfResource;
 
-    @Autowired
-    public DataLoadingService(VectorStore vectorStore) {
-        Assert.notNull(vectorStore, "VectorStore must not be null.");
-        this.vectorStore = vectorStore;
-    }
+	private final VectorStore vectorStore;
 
-    public void load() {
-        PagePdfDocumentReader pdfReader = new PagePdfDocumentReader(
-                this.pdfResource,
-                PdfDocumentReaderConfig.builder()
-                        .withPageExtractedTextFormatter(ExtractedTextFormatter.builder()
-                                .withNumberOfBottomTextLinesToDelete(3)
-                                .withNumberOfTopPagesToSkipBeforeDelete(1)
-                                .build())
-                        .withPagesPerDocument(1)
-                        .build());
+	@Autowired
+	public DataLoadingService(VectorStore vectorStore) {
+		Assert.notNull(vectorStore, "VectorStore must not be null.");
+		this.vectorStore = vectorStore;
+	}
 
-        var tokenTextSplitter = new TokenTextSplitter();
+	public void load() {
+		PagePdfDocumentReader pdfReader = new PagePdfDocumentReader(this.pdfResource,
+				PdfDocumentReaderConfig.builder()
+					.withPageExtractedTextFormatter(ExtractedTextFormatter.builder()
+						.withNumberOfBottomTextLinesToDelete(3)
+						.withNumberOfTopPagesToSkipBeforeDelete(1)
+						.build())
+					.withPagesPerDocument(1)
+					.build());
 
-        logger.info("Parsing document, splitting, creating embeddings and storing in vector store...  this will take a while.");
-        this.vectorStore.accept(
-                tokenTextSplitter.apply(
-                        pdfReader.get()));
-        logger.info("Done parsing document, splitting, creating embeddings and storing in vector store");
+		var tokenTextSplitter = new TokenTextSplitter();
 
-    }
+		logger.info(
+				"Parsing document, splitting, creating embeddings and storing in vector store...  this will take a while.");
+		this.vectorStore.accept(tokenTextSplitter.apply(pdfReader.get()));
+		logger.info("Done parsing document, splitting, creating embeddings and storing in vector store");
+
+	}
+
 }

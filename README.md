@@ -102,6 +102,25 @@ If you want to start over, for example because you changed in the code which doc
 http POST http://localhost:8080/data/delete
 ```
 
+### Q&A over the document using QueryEngine
+
+Send your quesiton to the QueryEngine using
+
+```shell
+http --body --unsorted localhost:8080/engine question=="What is the purpose of Carina?"
+
+```
+
+The response is
+
+```json
+{
+    "question": "What is the purpose of Carina?",
+    "answer": "The purpose of Carina is to provide a safe, easy-to-use, online location-based care matching service. It serves individuals and families searching for home care or child care, as well as care professionals looking for good jobs. Carina is committed to building community and prioritizing people over profit."
+}
+
+```
+
 ### Q&A over the document
 
 Send you question to the AI Model using
