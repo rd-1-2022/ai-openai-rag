@@ -26,13 +26,14 @@ public class VectorStoreRetriever implements DocumentRetriever {
 		Objects.requireNonNull(vectorStore, "VectorStore should not be null");
 		Objects.requireNonNull(searchRequest, "SearchRequest should not be null");
 		this.vectorStore = vectorStore;
-		this.searchRequest = searchRequest;
+		this.searchRequest = SearchRequest.from(searchRequest); // make a deep copy
 	}
 
 	@Override
 	public List<Document> retrieve(String message) {
 		logger.info("Retrieving relevant documents");
-		List<Document> similarDocuments = vectorStore.similaritySearch(message);
+		SearchRequest updatedSearchRequest = this.searchRequest.withQuery(message);
+		List<Document> similarDocuments = vectorStore.similaritySearch(updatedSearchRequest);
 		logger.info("Found {} relevant documents.", similarDocuments.size());
 		return similarDocuments;
 	}

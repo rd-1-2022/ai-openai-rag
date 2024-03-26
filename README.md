@@ -104,10 +104,10 @@ http POST http://localhost:8080/data/delete
 
 ### Q&A over the document using QueryEngine
 
-Send your quesiton to the QueryEngine using
+Send your question to the QueryEngine using
 
 ```shell
-http --body --unsorted localhost:8080/engine question=="What is the purpose of Carina?"
+http --body --unsorted localhost:8080/qa/engine question=="What is the purpose of Carina?"
 
 ```
 

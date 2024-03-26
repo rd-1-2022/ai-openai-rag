@@ -62,8 +62,8 @@ public class QueryEngine implements Engine {
 	@Override
 	public EngineResponse call(String question) {
 		List<Document> similarDocuments = this.documentRetriever.retrieve(question);
-		String context = createContext(similarDocuments);
-		Map<String, Object> contextMap = createContextMap(question, context);
+		String context = doCreateContext(similarDocuments);
+		Map<String, Object> contextMap = doCreateContextMap(question, context);
 		Prompt prompt = createPrompt(contextMap);
 		ChatResponse chatResponse = chatClient.call(prompt);
 		return new EngineResponse(chatResponse, similarDocuments);
@@ -92,12 +92,12 @@ public class QueryEngine implements Engine {
 		return userMessage;
 	}
 
-	protected Map<String, Object> createContextMap(String question, String context) {
+	protected Map<String, Object> doCreateContextMap(String question, String context) {
 		Map<String, Object> contextMap = Map.of("context", context, "question", question);
 		return contextMap;
 	}
 
-	protected String createContext(List<Document> similarDocuments) {
+	protected String doCreateContext(List<Document> similarDocuments) {
 		return similarDocuments.stream().map(entry -> entry.getContent()).collect(Collectors.joining("\n"));
 	}
 
